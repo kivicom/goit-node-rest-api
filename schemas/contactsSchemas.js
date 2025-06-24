@@ -10,6 +10,7 @@ export const createContactSchema = Joi.object({
         "Phone number must be in international format, e.g. +1234567890",
     })
     .required(),
+  favorite: Joi.boolean(),
 });
 
 export const updateContactSchema = Joi.object({
@@ -21,4 +22,9 @@ export const updateContactSchema = Joi.object({
       "string.pattern.base":
         "Phone number must be in international format, e.g. +1234567890",
     }),
+  favorite: Joi.boolean(),
+});
+
+export const updateStatusContactSchema = Joi.object({
+  favorite: Joi.boolean(),
 });

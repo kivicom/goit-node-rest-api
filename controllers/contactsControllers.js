@@ -49,10 +49,26 @@ const updateContact = async (req, res) => {
   res.json(result);
 };
 
+const updateStatusContact = async (req, res) => {
+  const { contactId } = req.params;
+
+  if (!req.body || Object.keys(req.body).length === 0) {
+    throw HttpError(400, "Body must have at least one field");
+  }
+
+  const result = await contactsService.updateStatusContact(contactId, req.body);
+  if (!result) {
+    throw HttpError(404, `Not found`);
+  }
+
+  res.status(200).json(result);
+};
+
 export default {
   getAllContacts: ctrlWrapper(getAllContacts),
   getOneContact: ctrlWrapper(getOneContact),
   deleteContact: ctrlWrapper(deleteContact),
   createContact: ctrlWrapper(createContact),
   updateContact: ctrlWrapper(updateContact),
+  updateStatusContact: ctrlWrapper(updateStatusContact),
 };
