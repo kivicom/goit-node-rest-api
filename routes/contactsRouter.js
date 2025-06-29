@@ -6,9 +6,11 @@ import {
   updateStatusContactSchema,
 } from "../schemas/contactsSchemas.js";
 import { updateContactSchema } from "../schemas/contactsSchemas.js";
+import authenticate from "../middleware/authenticate.js";
 
 const contactsRouter = express.Router();
 
+contactsRouter.use(authenticate);
 contactsRouter.get("/", contactsControllers.getAllContacts);
 
 contactsRouter.get("/:id", contactsControllers.getOneContact);

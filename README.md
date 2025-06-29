@@ -68,6 +68,34 @@ A simple RESTful API for managing a contact list using PostgreSQL and Sequelize.
 
 ---
 
+## 🔐 Authentication & Authorization (JWT)
+
+### Register `POST /api/auth/register`
+- Registers a new user
+- Required: `email`, `password`
+- **Status:** `201 Created`, `400 Bad Request`, or `409 Conflict`
+
+### Login `POST /api/auth/login`
+- Logs in a user and returns a token
+- Required: `email`, `password`
+- **Status:** `200 OK`, `400 Bad Request`, or `401 Unauthorized`
+
+### Get Current User `GET /api/auth/current`
+- Returns logged-in user's info
+- Header: `Authorization: Bearer <token>`
+- **Status:** `200 OK` or `401 Unauthorized`
+
+### Logout `POST /api/auth/logout`
+- Logs out a user (clears token)
+- Header: `Authorization: Bearer <token>`
+- **Status:** `204 No Content` or `401 Unauthorized`
+
+### 🔒 Protected Routes
+All routes under `/api/contacts` require valid JWT.
+Use `Authorization: Bearer <token>` header.
+
+---
+
 ## 🧪 Testing
 
 Use [Postman](https://www.postman.com/) or a similar tool to test the API endpoints.
