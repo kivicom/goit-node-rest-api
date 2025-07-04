@@ -1,11 +1,20 @@
 import Contact from "../db/Contact.js";
+import User from "../db/User.js";
 
-export const listContacts = () => Contact.findAll();
+export const listContacts = (query) =>
+  Contact.findAll({
+    where: query,
+    include: {
+      model: User,
+      as: "user",
+      attributes: ["email", "subscription"],
+    },
+  });
 
-export const getContactById = (contactId) => Contact.findByPk(contactId);
+export const getContact = (query) => Contact.findOne({ where: query });
 
-export const removeContact = async (contactId) => {
-  const contact = getContactById(contactId);
+export const removeContact = async (query) => {
+  const contact = await getContact(query);
   if (!contact) return null;
 
   await contact.destroy();
@@ -16,17 +25,17 @@ export const addContact = (data) => {
   return Contact.create(data);
 };
 
-export const updateContact = async (contactId, data) => {
-  const contact = await getContactById(contactId);
+export const updateContact = async (query, data) => {
+  const contact = await getContact(query);
   if (!contact) return null;
 
   await contact.update(data);
 
-  return;
+  return contact;
 };
 
-export const updateStatusContact = async (contactId, body) => {
-  const contact = await getContactById(contactId);
+export const updateStatusContact = async (query, body) => {
+  const contact = await getContact(query);
   if (!contact) return null;
 
   await contact.update({ favorite: body.favorite });
