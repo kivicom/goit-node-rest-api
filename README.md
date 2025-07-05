@@ -52,22 +52,6 @@ A simple RESTful API for managing a contact list using PostgreSQL and Sequelize.
 
 ---
 
-## 🧱 Database
-
-- PostgreSQL database hosted on Render
-- Sequelize ORM for model definition and queries
-- Sequelize model:  
-  ```js
-  {
-    name: STRING,
-    email: STRING,
-    phone: STRING,
-    favorite: BOOLEAN (default: false)
-  }
-  ```
-
----
-
 ## 🔐 Authentication & Authorization (JWT)
 
 ### Register `POST /api/auth/register`
@@ -96,16 +80,46 @@ Use `Authorization: Bearer <token>` header.
 
 ---
 
+## 🖼 Avatar Upload
+
+### Register with Gravatar
+- On user registration, avatar URL is auto-generated using [gravatar](https://gravatar.com).
+- Stored in `avatarURL` field in the user model.
+
+### Upload Custom Avatar `PATCH /api/auth/avatars`
+- Requires `multipart/form-data` with an image file
+- Header: `Authorization: Bearer <token>`
+- Stores uploaded file temporarily in `temp/` and then moves it to `public/avatars/` with a unique filename
+- Updates user's `avatarURL` with final URL
+
+**Success response:**
+```json
+{
+  "avatarURL": "/avatars/unique-filename.jpg"
+}
+```
+
+**Error response:**
+```json
+{
+  "message": "Not authorized"
+}
+```
+
+### Static File Hosting
+- Express serves static files from `public/`
+- Uploaded avatars accessible at: `http://localhost:<port>/avatars/<filename>`
+
+---
+
 ## 🧪 Testing
 
-Use [Postman](https://www.postman.com/) or a similar tool to test the API endpoints.
+Basic unit and integration tests are included to verify:
+- User registration and login
+- Auth middleware behavior
+- Avatar upload process
 
-Make sure to create `.env` with your PostgreSQL connection string:
-
-```
-DB_HOST=your_host
-DB_PORT=5432
-DB_NAME=db-contacts
-DB_USER=username
-DB_PASSWORD=password
+> Run tests with:
+```bash
+npm test
 ```
