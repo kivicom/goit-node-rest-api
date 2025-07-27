@@ -45,3 +45,13 @@ export const logoutUser = async ({ email }) => {
   user.token = null;
   await user.save();
 };
+
+export const updateAvatar = async (id, avatarURL) => {
+  const user = await User.findByPk(id);
+  if (!user) {
+    throw HttpError(404, "User not found");
+  }
+  user.avatarURL = avatarURL;
+  await user.save();
+  return user;
+};
