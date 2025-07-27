@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 
 import sequelize from "./sequelize.js";
 
-import { emmailRegexp } from "../costants/auth.js";
+import { emailRegexp } from "../costants/auth.js";
 
 const User = sequelize.define("user", {
   password: {
@@ -17,7 +17,7 @@ const User = sequelize.define("user", {
       msg: "Email in use",
     },
     validate: {
-      is: emmailRegexp,
+      is: emailRegexp,
     },
   },
   subscription: {
@@ -32,6 +32,13 @@ const User = sequelize.define("user", {
   token: {
     type: DataTypes.STRING,
     defaultValue: null,
+  },
+  verify: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  verificationToken: {
+    type: DataTypes.STRING,
   },
 });
 

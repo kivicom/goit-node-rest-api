@@ -123,3 +123,64 @@ Basic unit and integration tests are included to verify:
 ```bash
 npm test
 ```
+
+---
+
+### 📧 Email verification
+
+After registration, users must verify their email to log in.
+
+#### 1. Verification flow
+
+- After registering, a verification email is sent to the provided address.
+- The email contains a link:\
+  `GET /api/auth/verify/:verificationToken`
+- Visiting this link for the first time will verify the user and return:
+  ```json
+  {
+    "message": "Verification successful"
+  }
+  ```
+- Reusing the same link will return:
+  ```json
+  {
+    "message": "User not found"
+  }
+  ```
+
+#### 2. Resend verification email
+
+If the user did not receive the email or deleted it by mistake, they can request a resend.
+
+**POST** `/api/auth/verify`\
+Body:
+
+```json
+{
+  "email": "user@example.com"
+}
+```
+
+##### ✅ Success response
+
+```json
+{
+  "message": "Verification email sent"
+}
+```
+
+##### ⚠️ Errors
+
+- Missing email:
+  ```json
+  {
+    "message": "missing required field email"
+  }
+  ```
+- User already verified:
+  ```json
+  {
+    "message": "Verification has already been passed"
+  }
+  ```
+

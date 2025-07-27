@@ -2,6 +2,7 @@ import HttpError from "./HttpError.js";
 
 const validateBody = (schema) => {
   const func = (req, _, next) => {
+    console.log("Request body:", req.body);
     const { error } = schema.validate(req.body, {
       abortEarly: false,
     });

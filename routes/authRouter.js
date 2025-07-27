@@ -4,7 +4,11 @@ import authControllers from "../controllers/authControllers.js";
 
 import validateBody from "../helpers/validateBody.js";
 
-import { authLoginSchema, authRegisterSchema } from "../schemas/authSchemas.js";
+import {
+  authLoginSchema,
+  authRegisterSchema,
+  authVerifySchema,
+} from "../schemas/authSchemas.js";
 
 import authenticate from "../middleware/authenticate.js";
 import upload from "../middleware/upload.js";
@@ -16,6 +20,17 @@ authRouter.post(
   upload.single("avatar"),
   validateBody(authRegisterSchema),
   authControllers.registerController
+);
+
+authRouter.get(
+  "/verify/:verificationToken",
+  authControllers.verifyEmailController
+);
+
+authRouter.post(
+  "/verify",
+  validateBody(authVerifySchema),
+  authControllers.resendVerificationEmailController
 );
 
 authRouter.post(
